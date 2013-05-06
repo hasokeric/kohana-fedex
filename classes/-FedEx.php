@@ -1,6 +1,6 @@
 <?php
 
-class Fedex {
+class FedEx {
 
 	protected $_service;
     protected $_currency;
@@ -11,7 +11,7 @@ class Fedex {
 
     public static function getServices()
     {
-        $service_config = Kohana::$config->load('Fedex.service');
+        $service_config = Kohana::$config->load('fedex.service');
 
         return array_keys($service_config);
     }
@@ -21,21 +21,21 @@ class Fedex {
 		$service = $name;
         $currency = $arguments[0];
 
-        if ( ! isset(Fedex::$_instance[$service][$currency]))
+        if ( ! isset(FedEx::$_instance[$service][$currency]))
 		{
-            $currency_config = Kohana::$config->load('Fedex.currency.'.$currency);
-            $service_config = Kohana::$config->load('Fedex.service.'.$service);
+            $currency_config = Kohana::$config->load('fedex.currency.'.$currency);
+            $service_config = Kohana::$config->load('fedex.service.'.$service);
 
             if (empty($service_config))
-                throw new Kohana_Exception('The Fedex Service has not been selected');
+                throw new Kohana_Exception('The FedEx Service has not been selected');
 
             if (empty($currency_config))
-                throw new Kohana_Exception('The Fedex account currency has not been selected');
+                throw new Kohana_Exception('The FedEx account currency has not been selected');
 
-            Fedex::$_instance[$service][$currency] = new Fedex($service_config, $currency_config);
+            FedEx::$_instance[$service][$currency] = new FedEx($service_config, $currency_config);
 		}
-		
-		return Fedex::$_instance[$service][$currency];
+
+		return FedEx::$_instance[$service][$currency];
 	}
 
     private function __construct($service, $currency)
@@ -58,7 +58,7 @@ class Fedex {
             'MeterNumber' => $this->_currency['meterNumber'],
         );
 
-        $wsdl = Kohana::$config->load('Fedex.wsdldirectory').$this->_service['wsdl'];
+        $wsdl = Kohana::$config->load('fedex.wsdldirectory').$this->_service['wsdl'];
 
         $soap_options = array();
         $soap_options['trace'] = true;
@@ -93,16 +93,16 @@ class Fedex {
 
             $this->_last_request = array_merge($this->_base_request, $arguments[0]);
             try
-            { 
+            {
                 $response = $this->_soapClient->$name($this->_last_request);
-            } 
+            }
             catch (SoapFault $sf)
-            { 
-                throw new Kohana_Exception('Fedex SoapFault error: :message', array(':message' => $sf->getMessage()));
-            } 
+            {
+                throw new Kohana_Exception('FedEx SoapFault error: :message', array(':message' => $sf->getMessage()));
+            }
             catch (Exception $e)
-            { 
-                throw new Kohana_Exception('Fedex Exception error: :message', array(':message' => $e->getMessage()));
+            {
+                throw new Kohana_Exception('FedEx Exception error: :message', array(':message' => $e->getMessage()));
             }
 
             return $response;
