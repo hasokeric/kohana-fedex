@@ -1,0 +1,10 @@
+{
+    "name": "kohana-modules/kohana-shipping",
+    "type": "kohana-module",
+    "description": "Shipping Modules For Kohana 3.3",
+    "keywords": ["kohana","fedex","ups","module"],
+    "require": {
+        "php": ">=5.3",
+        "composer/installers": "*"
+    }
+}
