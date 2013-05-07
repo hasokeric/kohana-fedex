@@ -2,7 +2,7 @@
 
 return array
 (
-    'wsdldirectory' => MODPATH.'fedex'.DIRECTORY_SEPARATOR.'wsdl'.DIRECTORY_SEPARATOR,
+    'wsdldirectory' => MODPATH.'kohana-shipping'.DIRECTORY_SEPARATOR.'wsdl'.DIRECTORY_SEPARATOR.'fedex'.DIRECTORY_SEPARATOR,
     'currency' => array(
         'USD' => array
         (
